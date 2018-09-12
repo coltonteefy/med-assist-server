@@ -10,12 +10,16 @@ var router = express.Router();
 
 app.use('/api', router);
 
-router.route('/allUsers').get(userController.getAllUsers);
-router.route('/users/:_id').get(userController.getUserById);
-router.route('/user/:_id').get(userController.getUser);
-router.route('/addUser').post(userController.addUser);
-router.route('/updateUser/:_id').post(userController.updateUser);
-router.route('/deleteUser/:_id').get(userController.deleteUser);
+app.get('/', function (req, res) {
+    res.send("Welcome to app")
+});
+
+// router.route('/allUsers').get(userController.getAllUsers);
+// router.route('/users/:_id').get(userController.getUserById);
+// router.route('/user/:_id').get(userController.getUser);
+// router.route('/addUser').post(userController.addUser);
+// router.route('/updateUser/:_id').post(userController.updateUser);
+// router.route('/deleteUser/:_id').get(userController.deleteUser);
 
 
 app.listen(3000, function () {
