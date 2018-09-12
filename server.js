@@ -7,7 +7,9 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 var router = express.Router();
 
-app.use('/api', router);
+// app.use('/api', router);
+
+app.use(express.static("/api"), router);
 
 router.route('/allUsers').get(userController.getAllUsers);
 router.route('/users/:_id').get(userController.getUserById);
