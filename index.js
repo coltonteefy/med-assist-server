@@ -17,7 +17,7 @@ app.set('view engine','ejs');
 
 router.route('/allUsers').get(userController.getAllUsers);
 router.route('/users/:_id').get(userController.getUserById);
-router.route('/user/:_id').get(userController.getUser);
+router.route('/user/:userName').get(userController.getUser);
 router.route('/addUser').post(userController.addUser);
 router.route('/updateUser/:_id').post(userController.updateUser);
 router.route('/deleteUser/:_id').get(userController.deleteUser);

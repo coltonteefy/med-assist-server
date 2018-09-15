@@ -19,7 +19,7 @@ exports.getUserById = function (req, res) {
 };
 
 exports.getUser = function (req, res) {
-    User.find({_id: req.params._id}, function (err, user) {
+    User.find({userName: req.params.userName}, function (err, user) {
         if (err) {
             res.send(err)
         } else
@@ -32,6 +32,7 @@ exports.addUser = function (req, res) {
     user.userEmail = req.body.userEmail;
     user.userName = req.body.userName;
     user.userPassword = req.body.userPassword;
+    user.userImage = req.body.userImage;
 
     user.save(function (err) {
         if (err) {
