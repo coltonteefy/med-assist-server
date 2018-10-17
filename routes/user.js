@@ -21,7 +21,7 @@ exports.register = function (req, res) {
     User.findOne({username: {"$regex": "^" + username + "\\b", "$options": "i"}}, function (err, user) {
         User.findOne({email: {"$regex": "^" + email + "\\b", "$options": "i"}}, function (err, mail) {
             if (user || mail) {
-                res.send("Username or email already exists")
+                res.json({message: "Username or email already exists", data: user});
             } else {
                 var newUser = new User({
                     username: username,
@@ -34,7 +34,7 @@ exports.register = function (req, res) {
                     if (err) {
                         res.send(err)
                     } else {
-                        res.send({message: "User info was saved.", data: user});
+                        res.json({message: "User info was saved.", data: user});
                         console.log(user);
                     }
                 });
@@ -102,15 +102,16 @@ exports.logout = function (req, res) {
 exports.login = function (req, res, done) {
     User.findOne({username: req.body.username}, function (err, user) {
         if (err) {
+            res.json({message: err});
             res.send("error", err)
         }
         if (!user) {
-            res.send('Authentication failed. User not found.');
+            res.json({message:'Authentication failed. User not found', data: user});
         } else {
             User.comparePassword(req.body.password, user.password, function (err, isMatch) {
                 if (err) throw err;
                 if (isMatch) {
-                    res.send("Success " + user);
+                    res.json({message: "Success", data: user});
                     return done(null, {message: 'success'});
                 } else {
                     return done(null, false, {message: 'Invalid password'});
