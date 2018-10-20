@@ -89,33 +89,22 @@ io.on('connection', function(socket){
 
     console.log('New Conncetion made');
 
-    socket.on('connect user', function(user){
-        console.log("Connected user ");
-        io.emit('connect user', user);
-    });
-
-    socket.on('on typing', function(typing){
-        console.log("Typing.... ");
-        io.emit('on typing', typing);
-    });
-
-    socket.on('chat message', function(msg){
-        console.log("Message " + msg['message']);
-        io.emit('chat message', msg);
-    });
-    
-//DIFFERENT HERE
     socket.on('join', function(data){
         //joining
         socket.join(data.room);
         console.log(data.user + 'joined the room : ' + data.room);
-        socket.broadcast.to(data.room).emit('new user joined', {user:data.user, message:'has joined this room.'});
+        socket.to(data.room).emit('new user joined', {user:data.user, message:'has joined this room.'});
     });
 
     socket.on('leave', function(data){
         console.log(data.user + 'left the room : ' + data.room);
         socket.broadcast.to(data.room).emit('left room', {user:data.user, message:'has left this room.'});
         socket.leave(data.room);
+    });
+
+    socket.on('typing', function(data){
+        console.log(data.user + " is typing.... ");
+        socket.to(data.room).emit('typing...', {user:data.user, message:'is typing...'});
     });
 
     socket.on('message',function(data){
