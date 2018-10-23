@@ -40,7 +40,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '/api')), router);
-app.use('/uploads', express.static('uploads'));
+app.use(express.static('upload/image'));
 
 // Express Session
 app.use(session({
@@ -97,11 +97,14 @@ const upload = multer({
     fileFilter: fileFilter
 });
 
+//POST FOR USER IMAGE OUT HERE 
 app.post('/addUserImage/:username', upload.single('image'), (req, res, next) => {
-    const url = 'https://' + req.get('host');
-    var filename = req.file.path;
+    const url = 'http://' + req.get('host');
+    // var filePath = req.file.path;
+    var fileName = req.file.filename;
+    console.log(req.file);
     User.updateOne({username: req.params.username}, {
-        image: url + '/image/' + filename
+        image: fileName
     }, function (err) {
         if (err) {
             res.send(err);
@@ -112,13 +115,19 @@ app.post('/addUserImage/:username', upload.single('image'), (req, res, next) => 
     })
 });
 
-router.route('/register').post(userRoutes.register);
-router.route('/login').post(userRoutes.login);
+//GET
 router.route('/logout').get(userRoutes.logout);
 router.route('/getAllUsers').get(userRoutes.getAllUsers);
-router.route('/updateUser/:_id').post(userRoutes.updateUser);
+router.route('/getUserImage/:username').get(userRoutes.getUserImage);
 router.route('/deleteUser/:_id').get(userRoutes.deleteUser);
+
+//POST
+router.route('/register').post(userRoutes.register);
+router.route('/login').post(userRoutes.login);
+router.route('/updateUser/:_id').post(userRoutes.updateUser);
 router.route('/addUserEvent/:username').post(userRoutes.addUserEvent);
+
+
 // router.route('/addUserImage/:username').post(userRoutes.addUserImage);
 
 

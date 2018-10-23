@@ -11,6 +11,20 @@ exports.getAllUsers = function (req, res) {
     })
 };
 
+exports.getUserImage = function (req, res) {
+    User.find({username: req.params.username}, function (err, user) {
+        var image = user[0].image;
+        if (err) {
+            res.send(err);
+        } else
+            if(image === "") {
+                res.send({message: "no image"});
+            } else {
+                res.json({message: image});
+            }
+    })
+};
+
 exports.register = function (req, res) {
     var name = req.body.name;
     var email = req.body.email;
@@ -27,7 +41,8 @@ exports.register = function (req, res) {
                     username: username,
                     password: password,
                     email: email,
-                    name: name
+                    name: name,
+                    image: ''
                 });
 
                 User.createUser(newUser, function (err, user) {
