@@ -11,6 +11,8 @@ var expressValidator = require('express-validator');
 var router = express.Router();
 
 var userRoutes = require('./routes/user');
+var calendarRoutes = require('./routes/calendar');
+
 var app = express();
 
 app.set('port', (process.env.PORT || 5000));
@@ -73,6 +75,12 @@ router.route('/logout').get(userRoutes.logout);
 router.route('/getAllUsers').get(userRoutes.getAllUsers);
 router.route('/updateUser/:_id').post(userRoutes.updateUser);
 router.route('/deleteUser/:_id').get(userRoutes.deleteUser);
+router.route('/addUserEvent/:username').post(userRoutes.addUserEvent);
+
+//CALENDAR ROUTES
+router.route('/getAllEvents').get(calendarRoutes.getAllEvents);
+router.route('/createNewEvent').post(calendarRoutes.createNewEvent);
+
 
 
 // app.listen(PORT, function () {

@@ -57,6 +57,26 @@ exports.updateUser = function (req, res) {
     });
 };
 
+exports.addUserEvent = function (req, res) {
+    User.updateOne({username: req.params.username}, {
+        event: [
+            {
+                doctor: req.body.doctor,
+                time: req.body.time,
+                date: req.body.date,
+                task: req.body.task
+            }
+        ]
+    }, function (err, num, raw) {
+        if (err) {
+            res.send(err);
+        }
+        res.json(num);
+    });
+};
+
+
+
 exports.deleteUser = function (req, res) {
     User.deleteOne({_id: req.params._id}, function (err) {
         if (err) {
@@ -106,7 +126,7 @@ exports.login = function (req, res, done) {
             res.send("error", err)
         }
         if (!user) {
-            res.json({message:'Authentication failed. User not found', data: user});
+            res.json({message:"Authentication failed. User not found", data: user});
         } else {
             User.comparePassword(req.body.password, user.password, function (err, isMatch) {
                 if (err) throw err;
@@ -114,6 +134,7 @@ exports.login = function (req, res, done) {
                     res.json({message: "Success", data: user});
                     return done(null, {message: 'success'});
                 } else {
+                    res.json({message: "Invalid password", data: user});
                     return done(null, false, {message: 'Invalid password'});
                 }
             });

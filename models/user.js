@@ -20,7 +20,15 @@ var User = mongoose.Schema({
     name: {
         type: String,
         required: true
-    }
+    },
+    events: [
+        {
+            doctor: String,
+            time: String,
+            date: String,
+            task: String
+        }
+    ]
 });
 
 module.exports = mongoose.model("User", User);
