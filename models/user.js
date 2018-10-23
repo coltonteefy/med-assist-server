@@ -21,11 +21,14 @@ var User = mongoose.Schema({
         type: String,
         required: true
     },
+    image: {
+        type: String
+    },
     events: [
         {
             doctor: String,
-            time: String,
             date: String,
+            time: String,
             task: String
         }
     ]

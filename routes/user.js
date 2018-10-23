@@ -44,7 +44,6 @@ exports.register = function (req, res) {
 };
 
 exports.updateUser = function (req, res) {
-    console.log(req.params._id);
     User.updateOne({_id: req.params._id}, {
         userEmail: req.body.userName,
         userName: req.body.userName,
@@ -58,24 +57,24 @@ exports.updateUser = function (req, res) {
 };
 
 exports.addUserEvent = function (req, res) {
+    var event = {
+        doctor: req.body.doctor,
+        time: req.body.time,
+        date: req.body.date,
+        task: req.body.task
+    };
+
     User.updateOne({username: req.params.username}, {
-        event: [
-            {
-                doctor: req.body.doctor,
-                time: req.body.time,
-                date: req.body.date,
-                task: req.body.task
-            }
-        ]
-    }, function (err, num, raw) {
+        $push: {
+            events: event
+        }
+    }, function (err, task, raw) {
         if (err) {
             res.send(err);
         }
-        res.json(num);
+        res.json({task: task, message: "event added to calendar"});
     });
 };
-
-
 
 exports.deleteUser = function (req, res) {
     User.deleteOne({_id: req.params._id}, function (err) {
@@ -126,7 +125,7 @@ exports.login = function (req, res, done) {
             res.send("error", err)
         }
         if (!user) {
-            res.json({message:"Authentication failed. User not found", data: user});
+            res.json({message: "Authentication failed. User not found", data: user});
         } else {
             User.comparePassword(req.body.password, user.password, function (err, isMatch) {
                 if (err) throw err;

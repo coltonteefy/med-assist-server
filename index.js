@@ -8,10 +8,11 @@ var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var expressValidator = require('express-validator');
+var multer = require('multer');
 var router = express.Router();
 
 var userRoutes = require('./routes/user');
-var calendarRoutes = require('./routes/calendar');
+var User = require('./models/user');
 
 var app = express();
 
@@ -39,6 +40,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '/api')), router);
+app.use('/uploads', express.static('uploads'));
 
 // Express Session
 app.use(session({
@@ -69,6 +71,47 @@ app.use(expressValidator({
     }
 }));
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './upload/image/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    // reject a file
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
+
+app.post('/addUserImage/:username', upload.single('image'), (req, res, next) => {
+    const url = 'https://' + req.get('host');
+    var filename = req.file.path;
+    User.updateOne({username: req.params.username}, {
+        image: url + '/image/' + filename
+    }, function (err) {
+        if (err) {
+            res.send(err);
+            res.json({message: "fail"})
+        } else {
+            res.json({message: "image saved"})
+        }
+    })
+});
+
 router.route('/register').post(userRoutes.register);
 router.route('/login').post(userRoutes.login);
 router.route('/logout').get(userRoutes.logout);
@@ -76,46 +119,42 @@ router.route('/getAllUsers').get(userRoutes.getAllUsers);
 router.route('/updateUser/:_id').post(userRoutes.updateUser);
 router.route('/deleteUser/:_id').get(userRoutes.deleteUser);
 router.route('/addUserEvent/:username').post(userRoutes.addUserEvent);
-
-//CALENDAR ROUTES
-router.route('/getAllEvents').get(calendarRoutes.getAllEvents);
-router.route('/createNewEvent').post(calendarRoutes.createNewEvent);
-
+// router.route('/addUserImage/:username').post(userRoutes.addUserImage);
 
 
 // app.listen(PORT, function () {
 //     console.log("Server listening on port 5000");
 // });
 
-http.listen(app.get('port'), function() {
+http.listen(app.get('port'), function () {
     console.log('Server listening on port', app.get('port'));
 });
 
 
 //IO CONNECTION
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
 
     console.log('New Conncetion made');
 
-    socket.on('join', function(data){
+    socket.on('join', function (data) {
         //joining
         socket.join(data.room);
         console.log(data.user + 'joined the room : ' + data.room);
-        socket.to(data.room).emit('new user joined', {user:data.user, message:'has joined this room.'});
+        socket.to(data.room).emit('new user joined', {user: data.user, message: 'has joined this room.'});
     });
 
-    socket.on('leave', function(data){
+    socket.on('leave', function (data) {
         console.log(data.user + 'left the room : ' + data.room);
-        socket.broadcast.to(data.room).emit('left room', {user:data.user, message:'has left this room.'});
+        socket.broadcast.to(data.room).emit('left room', {user: data.user, message: 'has left this room.'});
         socket.leave(data.room);
     });
 
-    socket.on('typing', function(data){
+    socket.on('typing', function (data) {
         console.log(data.user + " is typing.... ");
-        socket.to(data.room).emit('typing...', {user:data.user, message:'is typing...'});
+        socket.to(data.room).emit('typing...', {user: data.user, message: 'is typing...'});
     });
 
-    socket.on('message',function(data){
-        io.in(data.room).emit('new message', {user:data.user, message:data.message});
+    socket.on('message', function (data) {
+        io.in(data.room).emit('new message', {user: data.user, message: data.message});
     })
 });
