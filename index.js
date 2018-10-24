@@ -40,7 +40,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '/api')), router);
-app.use(express.static('upload/image'));
+app.use('/upload/image',express.static('upload/image'));
 
 // Express Session
 app.use(session({
