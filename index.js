@@ -40,7 +40,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '/api')), router);
-app.use('/upload/image',express.static('upload/image'));
+// app.use('/upload/',express.static('upload/'));
+app.use(express.static('upload/'));
 
 // Express Session
 app.use(session({
@@ -73,7 +74,7 @@ app.use(expressValidator({
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './upload/image/');
+        cb(null, './upload/');
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + file.originalname);
@@ -100,11 +101,11 @@ const upload = multer({
 //POST FOR USER IMAGE 
 app.post('/addUserImage/:username', upload.single('image'), (req, res, next) => {
     // const url = 'http://' + req.get('host');
-    // var filePath = req.file.path;
-    var fileName = req.file.filename;
+    var filePath = req.file.path;
+    // var fileName = req.file.filename;
     console.log(req.file);
     User.updateOne({username: req.params.username}, {
-        image: fileName
+        image: filePath
     }, function (err) {
         if (err) {
             res.send(err);
