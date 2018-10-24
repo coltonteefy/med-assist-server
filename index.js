@@ -100,12 +100,12 @@ const upload = multer({
 
 //POST FOR USER IMAGE 
 app.post('/addUserImage/:username', upload.single('image'), (req, res, next) => {
-    // const url = 'http://' + req.get('host');
-    var filePath = req.file.path;
-    // var fileName = req.file.filename;
+    const url = 'http://' + req.get('host');
+    // var filePath = req.file.path;
+    var fileName = req.file.filename;
     console.log(req.file);
     User.updateOne({username: req.params.username}, {
-        image: filePath
+        image: url + "/" + fileName
     }, function (err) {
         if (err) {
             res.send(err);
