@@ -97,9 +97,9 @@ const upload = multer({
     fileFilter: fileFilter
 });
 
-//POST FOR USER IMAGE OUT HERE 
+//POST FOR USER IMAGE 
 app.post('/addUserImage/:username', upload.single('image'), (req, res, next) => {
-    const url = 'http://' + req.get('host');
+    // const url = 'http://' + req.get('host');
     // var filePath = req.file.path;
     var fileName = req.file.filename;
     console.log(req.file);
@@ -126,10 +126,6 @@ router.route('/register').post(userRoutes.register);
 router.route('/login').post(userRoutes.login);
 router.route('/updateUser/:_id').post(userRoutes.updateUser);
 router.route('/addUserEvent/:username').post(userRoutes.addUserEvent);
-
-
-// router.route('/addUserImage/:username').post(userRoutes.addUserImage);
-
 
 // app.listen(PORT, function () {
 //     console.log("Server listening on port 5000");
