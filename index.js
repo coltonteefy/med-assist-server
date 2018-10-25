@@ -78,7 +78,7 @@ router.route('/logout').get(userRoutes.logout);
 router.route('/getAllUsers').get(userRoutes.getAllUsers);
 router.route('/getUserImage/:username').get(userRoutes.getUserImage);
 router.route('/deleteUser/:_id').get(userRoutes.deleteUser);
-router.route('/addUserImage').post(userRoutes.addUserImage);
+router.route('/addUserImage/:username').post(userRoutes.addUserImage);
 
 //POST
 router.route('/register').post(userRoutes.register);
