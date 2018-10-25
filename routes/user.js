@@ -16,12 +16,11 @@ exports.getUserImage = function (req, res) {
         var image = user[0].image;
         if (err) {
             res.send(err);
-        } else
-            if(image === "") {
-                res.send({message: "no image"});
-            } else {
-                res.json({message: image});
-            }
+        } else if (image === "") {
+            res.send({message: "no image"});
+        } else {
+            res.json({message: image});
+        }
     })
 };
 
@@ -159,4 +158,31 @@ exports.login = function (req, res, done) {
 exports.logout = function (req, res) {
     req.logout();
     res.send("Logout success")
+};
+
+
+const upload = require('../services/file-upload');
+
+const singleUpload = upload.single('image');
+
+exports.addUserImage = function (req, res) {
+    singleUpload(req, res, function (err) {
+        if (err) {
+            res.json({message: err})
+        } else {
+            // console.log(req.file);
+            // res.json({imageURL: req.file.location});
+           
+            User.updateOne({username: req.params.username}, {
+                image: req.file.location
+            }, function (err) {
+                if (err) {
+                    res.send(err);
+                    res.json({message: "fail"})
+                } else {
+                    res.json({message: "image saved"})
+                }
+            })
+        }
+    });
 };

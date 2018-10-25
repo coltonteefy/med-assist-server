@@ -15,8 +15,7 @@ var userRoutes = require('./routes/user');
 var User = require('./models/user');
 
 var app = express();
-
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (PORT));
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -72,55 +71,13 @@ app.use(expressValidator({
     }
 }));
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './upload/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + file.originalname);
-    }
-});
-
-const fileFilter = (req, file, cb) => {
-    // reject a file
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-        cb(null, true);
-    } else {
-        cb(null, false);
-    }
-};
-
-const upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: 1024 * 1024 * 5
-    },
-    fileFilter: fileFilter
-});
-
-//POST FOR USER IMAGE 
-app.post('/addUserImage/:username', upload.single('image'), (req, res, next) => {
-    const url = 'http://' + req.get('host');
-    // var filePath = req.file.path;
-    var fileName = req.file.filename;
-    console.log(req.file);
-    User.updateOne({username: req.params.username}, {
-        image: url + "/" + fileName
-    }, function (err) {
-        if (err) {
-            res.send(err);
-            res.json({message: "fail"})
-        } else {
-            res.json({message: "image saved"})
-        }
-    })
-});
 
 //GET
 router.route('/logout').get(userRoutes.logout);
 router.route('/getAllUsers').get(userRoutes.getAllUsers);
 router.route('/getUserImage/:username').get(userRoutes.getUserImage);
 router.route('/deleteUser/:_id').get(userRoutes.deleteUser);
+router.route('/addUserImage').post(userRoutes.addUserImage);
 
 //POST
 router.route('/register').post(userRoutes.register);
