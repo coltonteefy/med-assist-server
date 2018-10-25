@@ -180,7 +180,7 @@ exports.addUserImage = function (req, res) {
                     res.send(err);
                     res.json({message: "fail"})
                 } else {
-                    res.json({message: "image saved"})
+                    res.json({message: "image saved" , imageURL: req.file.location})
                 }
             })
         }

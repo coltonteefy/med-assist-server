@@ -71,6 +71,7 @@ app.use(expressValidator({
     }
 }));
 
+//----------------------------------ROUTES----------------------------------
 
 //GET
 router.route('/logout').get(userRoutes.logout);
@@ -85,16 +86,12 @@ router.route('/login').post(userRoutes.login);
 router.route('/updateUser/:_id').post(userRoutes.updateUser);
 router.route('/addUserEvent/:username').post(userRoutes.addUserEvent);
 
-// app.listen(PORT, function () {
-//     console.log("Server listening on port 5000");
-// });
-
 http.listen(app.get('port'), function () {
     console.log('Server listening on port', app.get('port'));
 });
 
+//----------------------------------IO CONNECTION-------------------------------------
 
-//IO CONNECTION
 io.on('connection', function (socket) {
 
     console.log('New Conncetion made');
