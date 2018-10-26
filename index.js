@@ -12,14 +12,12 @@ var multer = require('multer');
 var router = express.Router();
 
 var userRoutes = require('./routes/user');
-var User = require('./models/user');
-
 var app = express();
+
 app.set('port', (PORT));
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
 
 mongoose.set('useCreateIndex', true);
 mongoose.connect('mongodb://admin2018:admin2018@ds053459.mlab.com:53459/med-assist-users', {useNewUrlParser: true});
@@ -76,15 +74,15 @@ app.use(expressValidator({
 //GET
 router.route('/logout').get(userRoutes.logout);
 router.route('/getAllUsers').get(userRoutes.getAllUsers);
-router.route('/getUserImage/:username').get(userRoutes.getUserImage);
 router.route('/deleteUser/:_id').get(userRoutes.deleteUser);
-router.route('/addUserImage/:username').post(userRoutes.addUserImage);
+router.route('/getUserImage/:username').get(userRoutes.getUserImage);
 
 //POST
 router.route('/register').post(userRoutes.register);
 router.route('/login').post(userRoutes.login);
 router.route('/updateUser/:_id').post(userRoutes.updateUser);
 router.route('/addUserEvent/:username').post(userRoutes.addUserEvent);
+router.route('/addUserImage/:username').post(userRoutes.addUserImage);
 
 http.listen(app.get('port'), function () {
     console.log('Server listening on port', app.get('port'));
@@ -97,7 +95,6 @@ io.on('connection', function (socket) {
     console.log('New Conncetion made');
 
     socket.on('join', function (data) {
-        //joining
         socket.join(data.room);
         console.log(data.user + 'joined the room : ' + data.room);
         socket.to(data.room).emit('new user joined', {user: data.user, message: 'has joined this room.'});

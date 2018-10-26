@@ -162,7 +162,6 @@ exports.logout = function (req, res) {
 
 
 const upload = require('../services/file-upload');
-
 const singleUpload = upload.single('image');
 
 exports.addUserImage = function (req, res) {
@@ -170,9 +169,6 @@ exports.addUserImage = function (req, res) {
         if (err) {
             res.json({message: err})
         } else {
-            // console.log(req.file);
-            // res.json({imageURL: req.file.location});
-           
             User.updateOne({username: req.params.username}, {
                 image: req.file.location
             }, function (err) {
