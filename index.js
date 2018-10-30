@@ -37,7 +37,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '/api')), router);
-// app.use('/upload/',express.static('upload/'));
 app.use(express.static('upload/'));
 
 // Express Session
@@ -102,7 +101,7 @@ io.on('connection', function (socket) {
 
     socket.on('leave', function (data) {
         console.log(data.user + 'left the room : ' + data.room);
-        socket.broadcast.to(data.room).emit('left room', {user: data.user, message: 'has left this room.'});
+        socket.to(data.room).emit('left room', {user: data.user, message: 'has left this room.'});
         socket.leave(data.room);
     });
 
