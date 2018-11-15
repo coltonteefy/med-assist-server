@@ -182,3 +182,40 @@ exports.addUserImage = function (req, res) {
         }
     });
 };
+
+const pdfUpload = require('../services/pdf-upload');
+const singlePdfUpload = pdfUpload.single('image');
+
+exports.uploadPdf = function (req, res) {
+    singlePdfUpload(req, res, function (err) {
+        if (err) {
+            res.json({message: err})
+        } else {
+            var pdf = {
+                id: '0',
+                pdfUrl: req.file.location,
+            }
+            User.updateOne({username: req.params.username}, {
+                $push: {
+                    pdfReport: pdf
+                }
+            }, function (err) {
+                if (err) {
+                    res.send(err);
+                    res.json({message: "fail"})
+                } else {
+                    res.json({message: "image saved" , imageURL: req.file.location})
+                }
+            })
+        }
+    });
+};
+
+exports.getUserPdfs = function (req, res) {
+    User.find({username: req.params.username}, function (err, user) {
+        if (err) {
+            res.send(err);
+        } else
+            res.send(JSON.stringify(user[0].pdfReport));
+    })
+};

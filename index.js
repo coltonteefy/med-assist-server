@@ -75,6 +75,7 @@ router.route('/logout').get(userRoutes.logout);
 router.route('/getAllUsers').get(userRoutes.getAllUsers);
 router.route('/deleteUser/:_id').get(userRoutes.deleteUser);
 router.route('/getUserImage/:username').get(userRoutes.getUserImage);
+router.route('/getUserPdfs/:username').get(userRoutes.getUserPdfs);
 
 //POST
 router.route('/register').post(userRoutes.register);
@@ -82,6 +83,7 @@ router.route('/login').post(userRoutes.login);
 router.route('/updateUser/:_id').post(userRoutes.updateUser);
 router.route('/addUserEvent/:username').post(userRoutes.addUserEvent);
 router.route('/addUserImage/:username').post(userRoutes.addUserImage);
+router.route('/uploadPdf/:username').post(userRoutes.uploadPdf);
 
 http.listen(app.get('port'), function () {
     console.log('Server listening on port', app.get('port'));
