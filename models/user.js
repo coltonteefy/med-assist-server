@@ -24,6 +24,12 @@ var User = mongoose.Schema({
     image: {
         type: String
     },
+    pdfReport: [
+        {
+            id: String,
+            pdfUrl: String,
+        }
+    ],
     events: [
         {
             doctor: String,
