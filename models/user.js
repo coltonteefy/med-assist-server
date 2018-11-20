@@ -34,6 +34,30 @@ var User = mongoose.Schema({
             pdfUrl: String,
         }
     ],
+
+    patientProfile: [
+        {
+        patientFirstName: String,
+        patientLastName: String,
+        address: String,
+        DOB: String,
+        sex: String,
+        maritalStatus: String,
+        language: String,
+        race: String,
+        ethnicity: String,
+        homePhone: String,
+        mobilePhone: String,
+        workPhone: String,
+        email: String,
+        emergencyFirstName: String,
+        emergencyLastName: String,
+        emergencyRelationship: String,
+        emergencyHomePhone: String,
+        emergencyMobilePhone: String,
+        emergencyWorkPhone: String
+        }
+    ],
     events: [
         {
             doctor: String,

@@ -182,6 +182,7 @@ exports.addUserImage = function (req, res) {
         }
     });
 };
+/*******************PDF Upload - Forms and Documents**************/
 
 const pdfUpload = require('../services/pdf-upload');
 const singlePdfUpload = pdfUpload.single('image');
@@ -219,3 +220,58 @@ exports.getUserPdfs = function (req, res) {
             res.send(JSON.stringify(user[0].pdfReport));
     })
 };
+
+/************************"My Profile" information************************/
+
+// Post
+//const profileUpload = require('../services/profile-upload');
+//const singleProfileUpload = profileUpload.single('text');
+
+exports.uploadProfile = function (req, res) {
+    var patientProfile = {
+        id: '0',
+        patientFirstName: req.body.patientFirstName,
+        patientLastName: req.body.patientLastName
+        //                address: req.body.address
+        //                DOB: req.body.DOB
+        //                sex: req.body.sex
+        //                maritalStatus: req.body.maritalStatus
+        //                language: req.body.language
+        //                race: req.body.race
+        //                ethnicity: req.body.ethnicity
+        //                homePhone: req.body.homePhone
+        //                mobilePhone: req.body.mobilePhone
+        //                workPhone: req.body.workPhone
+        //                email: req.body.email
+        //                emergencyFirstName: req.body.emergencyFirstName
+        //                emergencyLastName: req.body.emergencyLastName
+        //                emergencyRelationship: req.body.emergencyRelationship
+        //                emergencyHomePhone: req.body.emergencyHomePhone
+        //                emergencyMobilePhone: req.body.emergencyMobilePhone
+        //                emergencyWorkPhone: req.body.emergencyWorkPhone
+    }
+    User.updateOne({username: req.params.username}, {
+
+        $push: {
+            patientProfile: patientProfile
+        }
+   }, function (err, num, raw) {
+        if (err) {
+            res.send(err);
+        }
+        res.json(num);
+   });
+};
+
+// Get
+exports.getUserProfile = function (req, res) {
+    User.find({username: req.params.username}, function (err, user) {
+        var profile = user[0].patientProfile;
+        if (err) {
+            res.send(err);
+        } else {
+            res.json({message: "First Name: " + profile.patientFirstName + " Last Name: " + profile.patientLastName});
+        }
+    })
+};
+
