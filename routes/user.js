@@ -29,6 +29,7 @@ exports.register = function (req, res) {
     var email = req.body.email;
     var username = req.body.username;
     var password = req.body.password;
+    var permissions = req.body.permissions;
     var password2 = req.body.password2;
 
     User.findOne({username: {"$regex": "^" + username + "\\b", "$options": "i"}}, function (err, user) {
@@ -41,6 +42,7 @@ exports.register = function (req, res) {
                     password: password,
                     email: email,
                     name: name,
+                    permissions: permissions,
                     image: ''
                 });
 
