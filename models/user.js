@@ -24,6 +24,10 @@ var User = mongoose.Schema({
     image: {
         type: String
     },
+    permissions: {
+        type: Boolean,
+        required: true,
+    },
     pdfReport: [
         {
             id: String,
