@@ -234,3 +234,25 @@ exports.getUserPermissions = function (req, res) {
         }
     })
 };
+
+exports.getUserFullName = function (req, res) {
+    User.find({username: req.params.username}, function (err, user) {
+        var name = user[0].name;
+        if (err) {
+            res.send(err);
+        } else {
+            res.json({message: name});
+        }
+    })
+};
+
+exports.getUserEmail = function (req, res) {
+    User.find({username: req.params.username}, function (err, user) {
+        var email = user[0].email;
+        if (err) {
+            res.send(err);
+        } else {
+            res.json({message: email});
+        }
+    })
+};
