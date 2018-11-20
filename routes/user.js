@@ -29,6 +29,7 @@ exports.register = function (req, res) {
     var email = req.body.email;
     var username = req.body.username;
     var password = req.body.password;
+    var permissions = req.body.permissions;
     var password2 = req.body.password2;
 
     User.findOne({username: {"$regex": "^" + username + "\\b", "$options": "i"}}, function (err, user) {
@@ -41,6 +42,7 @@ exports.register = function (req, res) {
                     password: password,
                     email: email,
                     name: name,
+                    permissions: permissions,
                     image: ''
                 });
 
@@ -271,6 +273,41 @@ exports.getUserProfile = function (req, res) {
             res.send(err);
         } else {
             res.json({message: "First Name: " + profile.patientFirstName + " Last Name: " + profile.patientLastName});
+        }
+    })
+};
+
+exports.getUserPermissions = function (req, res) {
+    User.find({username: req.params.username}, function (err, user) {
+        var permissions = user[0].permissions;
+        if (err) {
+            res.send(err);
+        } else if (!permissions) {
+            res.send({message: "no permission set"});
+        } else {
+            res.json({message: permissions});
+        }
+    })
+};
+
+exports.getUserFullName = function (req, res) {
+    User.find({username: req.params.username}, function (err, user) {
+        var name = user[0].name;
+        if (err) {
+            res.send(err);
+        } else {
+            res.json({message: name});
+        }
+    })
+};
+
+exports.getUserEmail = function (req, res) {
+    User.find({username: req.params.username}, function (err, user) {
+        var email = user[0].email;
+        if (err) {
+            res.send(err);
+        } else {
+            res.json({message: email});
         }
     })
 };
