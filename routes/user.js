@@ -221,3 +221,16 @@ exports.getUserPdfs = function (req, res) {
             res.send(JSON.stringify(user[0].pdfReport));
     })
 };
+
+exports.getUserPermissions = function (req, res) {
+    User.find({username: req.params.username}, function (err, user) {
+        var permissions = user[0].permissions;
+        if (err) {
+            res.send(err);
+        } else if (!permissions) {
+            res.send({message: "no permission set"});
+        } else {
+            res.json({message: permissions});
+        }
+    })
+};
