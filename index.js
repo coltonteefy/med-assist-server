@@ -77,9 +77,10 @@ router.route('/deleteUser/:_id').get(userRoutes.deleteUser);
 router.route('/getUserImage/:username').get(userRoutes.getUserImage);
 router.route('/getUserPdfs/:username').get(userRoutes.getUserPdfs);
 router.route('/getUserProfile/:username').get(userRoutes.getUserProfile);
-router.route('/getUserPermissions/:username').get(userRoutes.getUserPermissions)
-router.route('/getUserFullName/:username').get(userRoutes.getUserFullName)
-router.route('/getUserEmail/:username').get(userRoutes.getUserEmail)
+router.route('/getUserPermissions/:username').get(userRoutes.getUserPermissions);
+router.route('/getUserFullName/:username').get(userRoutes.getUserFullName);
+router.route('/getUserEmail/:username').get(userRoutes.getUserEmail);
+router.route('/getUserEvents/:username').get(userRoutes.getUserEvents);
 
 //POST
 router.route('/register').post(userRoutes.register);

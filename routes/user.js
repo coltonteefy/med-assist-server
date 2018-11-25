@@ -92,6 +92,16 @@ exports.addUserEvent = function (req, res) {
     });
 };
 
+exports.getUserEvents = function (req, res) {
+    User.findOne({username: req.params.username}, function (err, user) {
+        if(err) {
+            res.send(err);
+        } else {
+            res.send(user.events);
+        }
+    })
+};
+
 exports.deleteUser = function (req, res) {
     User.deleteOne({_id: req.params._id}, function (err) {
         if (err) {
@@ -178,7 +188,7 @@ exports.addUserImage = function (req, res) {
                     res.send(err);
                     res.json({message: "fail"})
                 } else {
-                    res.json({message: "image saved" , imageURL: req.file.location})
+                    res.json({message: "image saved", imageURL: req.file.location})
                 }
             })
         }
@@ -197,7 +207,7 @@ exports.uploadPdf = function (req, res) {
             var pdf = {
                 id: '0',
                 pdfUrl: req.file.location,
-            }
+            };
             User.updateOne({username: req.params.username}, {
                 $push: {
                     pdfReport: pdf
@@ -207,7 +217,7 @@ exports.uploadPdf = function (req, res) {
                     res.send(err);
                     res.json({message: "fail"})
                 } else {
-                    res.json({message: "image saved" , imageURL: req.file.location})
+                    res.json({message: "image saved", imageURL: req.file.location})
                 }
             })
         }
@@ -257,12 +267,12 @@ exports.uploadProfile = function (req, res) {
         $push: {
             patientProfile: patientProfile
         }
-   }, function (err, num, raw) {
+    }, function (err, num, raw) {
         if (err) {
             res.send(err);
         }
         res.json(num);
-   });
+    });
 };
 
 // Get
