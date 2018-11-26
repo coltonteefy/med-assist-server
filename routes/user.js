@@ -11,6 +11,15 @@ exports.getAllUsers = function (req, res) {
     })
 };
 
+exports.getSingleUser = function (req, res) {
+    User.find({username: req.params.username}, function (err, user) {
+        if (err) {
+            res.send(err);
+        } else
+            res.json({message: user});
+    })
+};
+
 exports.getUserImage = function (req, res) {
     User.find({username: req.params.username}, function (err, user) {
         var image = user[0].image;
@@ -43,7 +52,12 @@ exports.register = function (req, res) {
                     email: email,
                     name: name,
                     permissions: permissions,
-                    image: ''
+                    image: '',
+                    prescriptions: {
+                        drugName: '',
+                        numberRefills: 0,
+                        expireDate: ''
+                    }
                 });
 
                 User.createUser(newUser, function (err, user) {
@@ -322,3 +336,19 @@ exports.getUserEmail = function (req, res) {
     })
 };
 
+exports.addRefillAmount = function (req, res) {
+    User.updateOne({username: req.params.username}, {
+        prescriptions: {
+            drugName: req.body.drugName,
+            numberRefills: req.body.numberRefills,
+            expireDate: req.body.expireDate
+        }
+    }, function (err) {
+        if (err) {
+            res.send(err);
+            res.json({message: "fail"})
+        } else {
+            res.json({message: "Refill Update"})
+        }
+    })
+};

@@ -65,6 +65,13 @@ var User = mongoose.Schema({
             time: String,
             task: String
         }
+    ],
+    prescriptions: [
+        {
+            drugName: String,
+            numberRefills: Number,
+            expireDate: String
+        }
     ]
 });
 

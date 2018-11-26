@@ -82,6 +82,10 @@ router.route('/getUserFullName/:username').get(userRoutes.getUserFullName);
 router.route('/getUserEmail/:username').get(userRoutes.getUserEmail);
 router.route('/getUserEvents/:username').get(userRoutes.getUserEvents);
 
+//NOAH CHANGES HERE
+router.route('/getSingleUser/:username').get(userRoutes.getSingleUser);
+
+
 //POST
 router.route('/register').post(userRoutes.register);
 router.route('/login').post(userRoutes.login);
@@ -90,6 +94,10 @@ router.route('/addUserEvent/:username').post(userRoutes.addUserEvent);
 router.route('/addUserImage/:username').post(userRoutes.addUserImage);
 router.route('/uploadPdf/:username').post(userRoutes.uploadPdf);
 router.route('/uploadProfile/:username').post(userRoutes.uploadProfile);
+
+//NOAH CHANGES HERE
+router.route('/addRefillAmount/:username').post(userRoutes.addRefillAmount);
+
 
 //PUT
 //if the user updates will put be used?
