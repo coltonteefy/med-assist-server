@@ -32,6 +32,7 @@ var User = mongoose.Schema({
     pdfReport: [
         {
             pdfName: String,
+            pdfDate: Date,
             pdfUrl: String,
         }
     ],
