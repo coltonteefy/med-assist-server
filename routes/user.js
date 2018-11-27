@@ -211,7 +211,7 @@ exports.addUserImage = function (req, res) {
 /*******************PDF Upload - Forms and Documents**************/
 
 const pdfUpload = require('../services/pdf-upload');
-const singlePdfUpload = pdfUpload.single('image');
+const singlePdfUpload = pdfUpload.single('pdf');
 
 exports.uploadPdf = function (req, res) {
     singlePdfUpload(req, res, function (err) {
@@ -231,7 +231,7 @@ exports.uploadPdf = function (req, res) {
                     res.send(err);
                     res.json({message: "fail"})
                 } else {
-                    res.json({message: "image saved", imageURL: req.file.location})
+                    res.json({message: "pdf saved", pdfUrl: req.file.location})
                 }
             })
         }
