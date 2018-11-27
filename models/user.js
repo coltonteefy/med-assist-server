@@ -69,7 +69,7 @@ var User = mongoose.Schema({
     prescriptions: [
         {
             drugName: String,
-            numberRefills: Number,
+            numberRefills: String,
             expireDate: String
         }
     ]

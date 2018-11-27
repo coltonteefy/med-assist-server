@@ -96,7 +96,8 @@ router.route('/uploadPdf/:username').post(userRoutes.uploadPdf);
 router.route('/uploadProfile/:username').post(userRoutes.uploadProfile);
 
 //NOAH CHANGES HERE
-router.route('/addRefillAmount/:username').post(userRoutes.addRefillAmount);
+router.route('/updateRefillAmount').post(userRoutes.updateRefillAmount);
+router.route('/addNewPrescription/:username').post(userRoutes.addNewPrescription);
 
 
 //PUT

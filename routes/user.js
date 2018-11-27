@@ -352,3 +352,36 @@ exports.addRefillAmount = function (req, res) {
         }
     })
 };
+
+exports.updateRefillAmount = function (req, res) {
+    User.updateOne({'prescriptions._id': req.body.id}, {
+        $set: { 'prescriptions.$.numberRefills' : req.body.numberRefills }
+    }, function (err) {
+        if (err) {
+            res.send(err);
+            res.json({message: "fail"})
+        } else {
+            res.json({message: "Refill Update"})
+        }
+    })
+};
+
+exports.addNewPrescription = function (req, res) {
+    const newPrescription = {
+        drugName: req.body.drugName,
+        numberRefills: req.body.numberRefills,
+        expireDate: req.body.expireDate
+    };
+    User.updateOne({username: req.params.username}, {
+        $push: {
+            prescriptions: newPrescription
+        }
+    }, function (err) {
+        if (err) {
+            res.send(err);
+            res.json({message: "fail"})
+        } else {
+            res.json({message: "Added a new prescription"})
+        }
+    })
+};
