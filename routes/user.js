@@ -231,9 +231,9 @@ exports.uploadPdf = function (req, res) {
             res.json({message: err})
         } else {
             var pdf = {
-                pdfName: req.name,
+                pdfName: req.params.pdfName,
                 pdfUrl: req.file.location,
-                pdfDate: req.date,
+                pdfDate: req.params.pdfDate,
             };
             User.updateOne({username: req.params.username}, {
                 $push: {
