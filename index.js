@@ -82,6 +82,8 @@ router.route('/getUserFullName/:username').get(userRoutes.getUserFullName);
 router.route('/getUserEmail/:username').get(userRoutes.getUserEmail);
 router.route('/getUserEvents/:username').get(userRoutes.getUserEvents);
 
+router.route('/getAllEvents/').get(userRoutes.getAllEvents);
+
 //NOAH CHANGES HERE
 router.route('/getSingleUser/:username').get(userRoutes.getSingleUser);
 
@@ -93,16 +95,14 @@ router.route('/updateUser/:_id').post(userRoutes.updateUser);
 router.route('/addUserEvent/:username').post(userRoutes.addUserEvent);
 router.route('/addUserImage/:username').post(userRoutes.addUserImage);
 router.route('/uploadPdf/:username').post(userRoutes.uploadPdf);
-router.route('/uploadProfile/:username').post(userRoutes.uploadProfile);
+router.route('/updateBasicInfo/:username').post(userRoutes.updateBasicInfo);
+router.route('/updatePhoneEmail/:username').post(userRoutes.updatePhoneEmail);
+router.route('/updateEmergencyContact/:username').post(userRoutes.updateEmergencyContact);
+
 
 //NOAH CHANGES HERE
 router.route('/updateRefillAmount').post(userRoutes.updateRefillAmount);
 router.route('/addNewPrescription/:username').post(userRoutes.addNewPrescription);
-
-
-//PUT
-//if the user updates will put be used?
-//router.route('/uploadProfile/:username').put(userRoutes.uploadProfile);
 
 
 http.listen(app.get('port'), function () {

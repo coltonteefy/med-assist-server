@@ -116,6 +116,18 @@ exports.getUserEvents = function (req, res) {
     })
 };
 
+exports.getAllEvents = function (req, res) {
+    User.find({}, function (err, events) {
+        if(err) {
+            res.send(err);
+        } else {
+            const results = events.map(event => event.events)
+                .reduce((prev, curr) => prev.concat(curr), []);
+            res.send(results);
+        }
+    })
+};
+
 exports.deleteUser = function (req, res) {
     User.deleteOne({_id: req.params._id}, function (err) {
         if (err) {
@@ -249,45 +261,70 @@ exports.getUserPdfs = function (req, res) {
 
 /************************"My Profile" information************************/
 
-// Post
-//const profileUpload = require('../services/profile-upload');
-//const singleProfileUpload = profileUpload.single('text');
 
-exports.uploadProfile = function (req, res) {
-    var patientProfile = {
-        id: '0',
+/*-------------------------------UPDATE BASIC INFO-------------------------------*/
+exports.updateBasicInfo = function (req, res) {
+    const info = {
         patientFirstName: req.body.patientFirstName,
-        patientLastName: req.body.patientLastName
-        //                address: req.body.address
-        //                DOB: req.body.DOB
-        //                sex: req.body.sex
-        //                maritalStatus: req.body.maritalStatus
-        //                language: req.body.language
-        //                race: req.body.race
-        //                ethnicity: req.body.ethnicity
-        //                homePhone: req.body.homePhone
-        //                mobilePhone: req.body.mobilePhone
-        //                workPhone: req.body.workPhone
-        //                email: req.body.email
-        //                emergencyFirstName: req.body.emergencyFirstName
-        //                emergencyLastName: req.body.emergencyLastName
-        //                emergencyRelationship: req.body.emergencyRelationship
-        //                emergencyHomePhone: req.body.emergencyHomePhone
-        //                emergencyMobilePhone: req.body.emergencyMobilePhone
-        //                emergencyWorkPhone: req.body.emergencyWorkPhone
-    }
+        patientLastName: req.body.patientLastName,
+        address: req.body.address,
+        DOB: req.body.DOB,
+        sex: req.body.sex,
+        maritalStatus: req.body.maritalStatus,
+        language: req.body.language,
+        race: req.body.race,
+        ethnicity: req.body.ethnicity,
+    };
     User.updateOne({username: req.params.username}, {
-
-        $push: {
-            patientProfile: patientProfile
-        }
-    }, function (err, num, raw) {
+        basicInfo: info
+    }, function (err) {
         if (err) {
             res.send(err);
         }
-        res.json(num);
+        res.json("update success");
     });
 };
+
+/*-------------------------------UPDATE PHONE AND EMAIL-------------------------------*/
+exports.updatePhoneEmail = function (req, res) {
+    const info = {
+        homePhone: req.body.homePhone,
+        mobilePhone: req.body.mobilePhone,
+        workPhone: req.body.workPhone,
+        email: req.body.email
+    };
+    User.updateOne({username: req.params.username}, {
+        phoneEmail: info
+    }, function (err) {
+        if (err) {
+            res.send(err);
+        }
+        res.json("update success");
+    });
+};
+
+/*-------------------------------UPDATE EMERGENCY-------------------------------*/
+exports.updateEmergencyContact = function (req, res) {
+    const info = {
+        emergencyFirstName: req.body.emergencyFirstName,
+        emergencyLastName: req.body.emergencyLastName,
+        emergencyRelationship: req.body.emergencyRelationship,
+        emergencyHomePhone: req.body.emergencyHomePhone,
+        emergencyMobilePhone: req.body.emergencyMobilePhone,
+        emergencyWorkPhone: req.body.emergencyWorkPhone
+    };
+    User.updateOne({username: req.params.username}, {
+        emergencyContact: info
+    }, function (err) {
+        if (err) {
+            res.send(err);
+        }
+        res.json("update success");
+    });
+};
+
+
+
 
 // Get
 exports.getUserProfile = function (req, res) {
