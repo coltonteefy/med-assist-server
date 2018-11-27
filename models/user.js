@@ -34,6 +34,7 @@ var User = mongoose.Schema({
             pdfName: String,
             pdfDate: Date,
             pdfUrl: String,
+            pdfDesc: String,
         }
     ],
     basicInfo: [
