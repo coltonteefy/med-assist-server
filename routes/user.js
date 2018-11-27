@@ -231,10 +231,11 @@ exports.uploadPdf = function (req, res) {
             res.json({message: err})
         } else {
             var pdf = {
-                pdfName: req.params.pdfName,
+                pdfName: req.body.pdfName,
                 pdfUrl: req.file.location,
-                pdfDate: req.params.pdfDate,
+                pdfDate: Date.now().toString()
             };
+            console.log("Pdf: " + pdf);
             User.updateOne({username: req.params.username}, {
                 $push: {
                     pdfReport: pdf
@@ -244,7 +245,7 @@ exports.uploadPdf = function (req, res) {
                     res.send(err);
                     res.json({message: "fail"})
                 } else {
-                    res.json({message: "pdf saved", pdfName: req.params.pdfName, pdfDate: Date.now().toString(),
+                    res.json({message: "pdf saved", pdfName: req.body.pdfName, pdfDate: Date.now().toString(),
                         pdfUrl: req.file.location})
                 }
             })

@@ -94,7 +94,7 @@ router.route('/login').post(userRoutes.login);
 router.route('/updateUser/:_id').post(userRoutes.updateUser);
 router.route('/addUserEvent/:username').post(userRoutes.addUserEvent);
 router.route('/addUserImage/:username').post(userRoutes.addUserImage);
-router.route('/uploadPdf/:username/:pdfName').post(userRoutes.uploadPdf);
+router.route('/uploadPdf/:username').post(userRoutes.uploadPdf);
 router.route('/updateBasicInfo/:username').post(userRoutes.updateBasicInfo);
 router.route('/updatePhoneEmail/:username').post(userRoutes.updatePhoneEmail);
 router.route('/updateEmergencyContact/:username').post(userRoutes.updateEmergencyContact);
