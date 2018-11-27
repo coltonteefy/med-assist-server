@@ -84,6 +84,7 @@ router.route('/getUserEvents/:username').get(userRoutes.getUserEvents);
 router.route('/getUserEventsByID/:_id').get(userRoutes.getUserEventsByID);
 router.route('/getAllEvents/').get(userRoutes.getAllEvents);
 router.route('/getSingleUser/:username').get(userRoutes.getSingleUser);
+router.route('/getUsernameById/:_id').get(userRoutes.getUsernameById);
 
 
 //POST
