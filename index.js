@@ -81,10 +81,8 @@ router.route('/getUserPermissions/:username').get(userRoutes.getUserPermissions)
 router.route('/getUserFullName/:username').get(userRoutes.getUserFullName);
 router.route('/getUserEmail/:username').get(userRoutes.getUserEmail);
 router.route('/getUserEvents/:username').get(userRoutes.getUserEvents);
-
+router.route('/getUserEventsByID/:_id').get(userRoutes.getUserEventsByID);
 router.route('/getAllEvents/').get(userRoutes.getAllEvents);
-
-//NOAH CHANGES HERE
 router.route('/getSingleUser/:username').get(userRoutes.getSingleUser);
 
 
@@ -98,9 +96,6 @@ router.route('/uploadPdf/:username').post(userRoutes.uploadPdf);
 router.route('/updateBasicInfo/:username').post(userRoutes.updateBasicInfo);
 router.route('/updatePhoneEmail/:username').post(userRoutes.updatePhoneEmail);
 router.route('/updateEmergencyContact/:username').post(userRoutes.updateEmergencyContact);
-
-
-//NOAH CHANGES HERE
 router.route('/updateRefillAmount').post(userRoutes.updateRefillAmount);
 router.route('/addNewPrescription/:username').post(userRoutes.addNewPrescription);
 

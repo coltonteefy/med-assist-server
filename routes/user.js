@@ -165,6 +165,16 @@ exports.getUserEvents = function (req, res) {
     })
 };
 
+exports.getUserEventsByID = function (req, res) {
+    User.findOne({_id: req.params._id}, function (err, user) {
+        if(err) {
+            res.send(err);
+        } else {
+            res.send(user.events);
+        }
+    })
+};
+
 exports.getAllEvents = function (req, res) {
     User.find({}, function (err, events) {
         if (err) {
