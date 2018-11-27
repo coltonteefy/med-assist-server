@@ -27,6 +27,7 @@ var User = mongoose.Schema({
     permissions: {
         type: Boolean,
         required: true,
+        default: false,
     },
     pdfReport: [
         {
