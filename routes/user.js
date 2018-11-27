@@ -12,33 +12,47 @@ exports.getAllUsers = function (req, res) {
 };
 
 exports.getSingleUser = function (req, res) {
-    User.find({username: req.params.username}, function (err, user) {
+    User.find({
+        username: req.params.username
+    }, function (err, user) {
         if (err) {
             res.send(err);
         } else
-            res.json({message: user});
+            res.json({
+                message: user
+            });
     })
 };
 
 
 exports.getSingleUserById = function (req, res) {
-    User.find({_id: req.params._id}, function (err, user) {
+    User.find({
+        _id: req.params._id
+    }, function (err, user) {
         if (err) {
             res.send(err);
         } else
-            res.json({message: user});
+            res.json({
+                message: user
+            });
     })
 };
 
 exports.getUserImage = function (req, res) {
-    User.find({username: req.params.username}, function (err, user) {
+    User.find({
+        username: req.params.username
+    }, function (err, user) {
         var image = user[0].image;
         if (err) {
             res.send(err);
         } else if (image === "") {
-            res.send({message: "no image"});
+            res.send({
+                message: "no image"
+            });
         } else {
-            res.json({message: image});
+            res.json({
+                message: image
+            });
         }
     })
 };
@@ -51,10 +65,23 @@ exports.register = function (req, res) {
     var permissions = req.body.permissions;
     var password2 = req.body.password2;
 
-    User.findOne({username: {"$regex": "^" + username + "\\b", "$options": "i"}}, function (err, user) {
-        User.findOne({email: {"$regex": "^" + email + "\\b", "$options": "i"}}, function (err, mail) {
+    User.findOne({
+        username: {
+            "$regex": "^" + username + "\\b",
+            "$options": "i"
+        }
+    }, function (err, user) {
+        User.findOne({
+            email: {
+                "$regex": "^" + email + "\\b",
+                "$options": "i"
+            }
+        }, function (err, mail) {
             if (user || mail) {
-                res.json({message: "Username or email already exists", data: user});
+                res.json({
+                    message: "Username or email already exists",
+                    data: user
+                });
             } else {
                 var newUser = new User({
                     username: username,
@@ -74,7 +101,10 @@ exports.register = function (req, res) {
                     if (err) {
                         res.send(err)
                     } else {
-                        res.json({message: "User info was saved.", data: user});
+                        res.json({
+                            message: "User info was saved.",
+                            data: user
+                        });
                         console.log(user);
                     }
                 });
@@ -84,7 +114,9 @@ exports.register = function (req, res) {
 };
 
 exports.updateUser = function (req, res) {
-    User.updateOne({_id: req.params._id}, {
+    User.updateOne({
+        _id: req.params._id
+    }, {
         userEmail: req.body.userName,
         userName: req.body.userName,
         userPassword: req.body.userPassword
@@ -104,7 +136,9 @@ exports.addUserEvent = function (req, res) {
         task: req.body.task
     };
 
-    User.updateOne({username: req.params.username}, {
+    User.updateOne({
+        username: req.params.username
+    }, {
         $push: {
             events: event
         }
@@ -112,13 +146,18 @@ exports.addUserEvent = function (req, res) {
         if (err) {
             res.send(err);
         }
-        res.json({task: task, message: "event added to calendar"});
+        res.json({
+            task: task,
+            message: "event added to calendar"
+        });
     });
 };
 
 exports.getUserEvents = function (req, res) {
-    User.findOne({username: req.params.username}, function (err, user) {
-        if(err) {
+    User.findOne({
+        username: req.params.username
+    }, function (err, user) {
+        if (err) {
             res.send(err);
         } else {
             res.send(user.events);
@@ -128,7 +167,7 @@ exports.getUserEvents = function (req, res) {
 
 exports.getAllEvents = function (req, res) {
     User.find({}, function (err, events) {
-        if(err) {
+        if (err) {
             res.send(err);
         } else {
             const results = events.map(event => event.events)
@@ -139,31 +178,38 @@ exports.getAllEvents = function (req, res) {
 };
 
 exports.deleteUser = function (req, res) {
-    User.deleteOne({_id: req.params._id}, function (err) {
+    User.deleteOne({
+        _id: req.params._id
+    }, function (err) {
         if (err) {
             res.send(err);
         }
-        res.json({message: "User was deleted"});
+        res.json({
+            message: "User was deleted"
+        });
     });
 };
 
 passport.use(new LocalStrategy(function (username, password, done) {
-        User.getUserByUsername(username, function (err, user) {
-            if (err) throw err;
-            if (!user) {
-                return done(null, false, {message: 'Unknown User'});
-            }
-            User.comparePassword(password, user.password, function (err, isMatch) {
-                if (err) throw err;
-                if (isMatch) {
-                    return done(null, user);
-                } else {
-                    return done(null, false, {message: 'Invalid password'});
-                }
+    User.getUserByUsername(username, function (err, user) {
+        if (err) throw err;
+        if (!user) {
+            return done(null, false, {
+                message: 'Unknown User'
             });
+        }
+        User.comparePassword(password, user.password, function (err, isMatch) {
+            if (err) throw err;
+            if (isMatch) {
+                return done(null, user);
+            } else {
+                return done(null, false, {
+                    message: 'Invalid password'
+                });
+            }
         });
-    })
-);
+    });
+}));
 
 passport.serializeUser(function (user, done) {
     done(null, user.id);
@@ -181,22 +227,39 @@ exports.logout = function (req, res) {
 };
 
 exports.login = function (req, res, done) {
-    User.findOne({username: req.body.username}, function (err, user) {
+    User.findOne({
+        username: req.body.username
+    }, function (err, user) {
         if (err) {
-            res.json({message: err});
+            res.json({
+                message: err
+            });
             res.send("error", err)
         }
         if (!user) {
-            res.json({message: "Authentication failed. User not found", data: user});
+            res.json({
+                message: "Authentication failed. User not found",
+                data: user
+            });
         } else {
             User.comparePassword(req.body.password, user.password, function (err, isMatch) {
                 if (err) throw err;
                 if (isMatch) {
-                    res.json({message: "Success", data: user});
-                    return done(null, {message: 'success'});
+                    res.json({
+                        message: "Success",
+                        data: user
+                    });
+                    return done(null, {
+                        message: 'success'
+                    });
                 } else {
-                    res.json({message: "Invalid password", data: user});
-                    return done(null, false, {message: 'Invalid password'});
+                    res.json({
+                        message: "Invalid password",
+                        data: user
+                    });
+                    return done(null, false, {
+                        message: 'Invalid password'
+                    });
                 }
             });
         }
@@ -215,16 +278,25 @@ const singleUpload = upload.single('image');
 exports.addUserImage = function (req, res) {
     singleUpload(req, res, function (err) {
         if (err) {
-            res.json({message: err})
+            res.json({
+                message: err
+            })
         } else {
-            User.updateOne({username: req.params.username}, {
+            User.updateOne({
+                username: req.params.username
+            }, {
                 image: req.file.location
             }, function (err) {
                 if (err) {
                     res.send(err);
-                    res.json({message: "fail"})
+                    res.json({
+                        message: "fail"
+                    })
                 } else {
-                    res.json({message: "image saved", imageURL: req.file.location})
+                    res.json({
+                        message: "image saved",
+                        imageURL: req.file.location
+                    })
                 }
             })
         }
@@ -238,37 +310,38 @@ const singlePdfUpload = pdfUpload.single('pdf');
 exports.uploadPdf = function (req, res) {
     singlePdfUpload(req, res, function (err) {
         if (err) {
-            res.json({message: err})
+            res.json({
+                message: err
+            })
         } else {
-            var pdf;
-            if(req.body.desc) {
-                pdf = {
-                    pdfName: req.body.pdfName,
-                    pdfDesc: req.body.pdfDesc,
-                    pdfUrl: req.file.location,
-                    pdfDate: Date.now().toString()
-                };
-            } else {
-                pdf = {
-                    pdfName: req.body.pdfName,
-                    pdfDesc: null,
-                    pdfUrl: req.file.location,
-                    pdfDate: Date.now().toString()
-                };
-            }
+            var pdf = {
+                pdfName: req.body.pdfName,
+                pdfDesc: req.body.pdfDesc,
+                pdfUrl: req.file.location,
+                pdfDate: Date.now().toString()
+            };
 
             console.log("Pdf: " + pdf);
-            User.updateOne({username: req.params.username}, {
+            User.updateOne({
+                username: req.params.username
+            }, {
                 $push: {
                     pdfReport: pdf
                 }
             }, function (err) {
                 if (err) {
                     res.send(err);
-                    res.json({message: "fail"})
+                    res.json({
+                        message: "fail"
+                    })
                 } else {
-                    res.json({message: "pdf saved", pdfName: req.body.pdfName, pdfDesc: req.body.pdfDesc,
-                    pdfDate: Date.now().toString(), pdfUrl: req.file.location})
+                    res.json({
+                        message: "pdf saved",
+                        pdfName: req.body.pdfName,
+                        pdfDesc: req.body.pdfDesc,
+                        pdfDate: Date.now().toString(),
+                        pdfUrl: req.file.location
+                    })
                 }
             })
         }
@@ -276,7 +349,9 @@ exports.uploadPdf = function (req, res) {
 };
 
 exports.getUserPdfs = function (req, res) {
-    User.find({username: req.params.username}, function (err, user) {
+    User.find({
+        username: req.params.username
+    }, function (err, user) {
         if (err) {
             res.send(err);
         } else
@@ -300,7 +375,9 @@ exports.updateBasicInfo = function (req, res) {
         race: req.body.race,
         ethnicity: req.body.ethnicity,
     };
-    User.updateOne({username: req.params.username}, {
+    User.updateOne({
+        username: req.params.username
+    }, {
         basicInfo: info
     }, function (err) {
         if (err) {
@@ -318,7 +395,9 @@ exports.updatePhoneEmail = function (req, res) {
         workPhone: req.body.workPhone,
         email: req.body.email
     };
-    User.updateOne({username: req.params.username}, {
+    User.updateOne({
+        username: req.params.username
+    }, {
         phoneEmail: info
     }, function (err) {
         if (err) {
@@ -338,7 +417,9 @@ exports.updateEmergencyContact = function (req, res) {
         emergencyMobilePhone: req.body.emergencyMobilePhone,
         emergencyWorkPhone: req.body.emergencyWorkPhone
     };
-    User.updateOne({username: req.params.username}, {
+    User.updateOne({
+        username: req.params.username
+    }, {
         emergencyContact: info
     }, function (err) {
         if (err) {
@@ -353,53 +434,73 @@ exports.updateEmergencyContact = function (req, res) {
 
 // Get
 exports.getUserProfile = function (req, res) {
-    User.find({username: req.params.username}, function (err, user) {
+    User.find({
+        username: req.params.username
+    }, function (err, user) {
         var profile = user[0].patientProfile;
         if (err) {
             res.send(err);
         } else {
-            res.json({message: "First Name: " + profile.patientFirstName + " Last Name: " + profile.patientLastName});
+            res.json({
+                message: "First Name: " + profile.patientFirstName + " Last Name: " + profile.patientLastName
+            });
         }
     })
 };
 
 exports.getUserPermissions = function (req, res) {
-    User.find({username: req.params.username}, function (err, user) {
+    User.find({
+        username: req.params.username
+    }, function (err, user) {
         var permissions = user[0].permissions;
         if (err) {
             res.send(err);
         } else if (!permissions) {
-            res.send({message: "no permission set"});
+            res.send({
+                message: "no permission set"
+            });
         } else {
-            res.json({message: permissions});
+            res.json({
+                message: permissions
+            });
         }
     })
 };
 
 exports.getUserFullName = function (req, res) {
-    User.find({username: req.params.username}, function (err, user) {
+    User.find({
+        username: req.params.username
+    }, function (err, user) {
         var name = user[0].name;
         if (err) {
             res.send(err);
         } else {
-            res.json({message: name});
+            res.json({
+                message: name
+            });
         }
     })
 };
 
 exports.getUserEmail = function (req, res) {
-    User.find({username: req.params.username}, function (err, user) {
+    User.find({
+        username: req.params.username
+    }, function (err, user) {
         var email = user[0].email;
         if (err) {
             res.send(err);
         } else {
-            res.json({message: email});
+            res.json({
+                message: email
+            });
         }
     })
 };
 
 exports.addRefillAmount = function (req, res) {
-    User.updateOne({username: req.params.username}, {
+    User.updateOne({
+        username: req.params.username
+    }, {
         prescriptions: {
             drugName: req.body.drugName,
             numberRefills: req.body.numberRefills,
@@ -408,22 +509,34 @@ exports.addRefillAmount = function (req, res) {
     }, function (err) {
         if (err) {
             res.send(err);
-            res.json({message: "fail"})
+            res.json({
+                message: "fail"
+            })
         } else {
-            res.json({message: "Refill Update"})
+            res.json({
+                message: "Refill Update"
+            })
         }
     })
 };
 
 exports.updateRefillAmount = function (req, res) {
-    User.updateOne({'prescriptions._id': req.body.id}, {
-        $set: { 'prescriptions.$.numberRefills' : req.body.numberRefills }
+    User.updateOne({
+        'prescriptions._id': req.body.id
+    }, {
+        $set: {
+            'prescriptions.$.numberRefills': req.body.numberRefills
+        }
     }, function (err) {
         if (err) {
             res.send(err);
-            res.json({message: "fail"})
+            res.json({
+                message: "fail"
+            })
         } else {
-            res.json({message: "Refill Update"})
+            res.json({
+                message: "Refill Update"
+            })
         }
     })
 };
@@ -434,16 +547,22 @@ exports.addNewPrescription = function (req, res) {
         numberRefills: req.body.numberRefills,
         expireDate: req.body.expireDate
     };
-    User.updateOne({username: req.params.username}, {
+    User.updateOne({
+        username: req.params.username
+    }, {
         $push: {
             prescriptions: newPrescription
         }
     }, function (err) {
         if (err) {
             res.send(err);
-            res.json({message: "fail"})
+            res.json({
+                message: "fail"
+            })
         } else {
-            res.json({message: "Added a new prescription"})
+            res.json({
+                message: "Added a new prescription"
+            })
         }
     })
 };
