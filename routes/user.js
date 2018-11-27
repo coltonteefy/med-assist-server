@@ -20,6 +20,16 @@ exports.getSingleUser = function (req, res) {
     })
 };
 
+
+exports.getSingleUserById = function (req, res) {
+    User.find({_id: req.params._id}, function (err, user) {
+        if (err) {
+            res.send(err);
+        } else
+            res.json({message: user});
+    })
+};
+
 exports.getUserImage = function (req, res) {
     User.find({username: req.params.username}, function (err, user) {
         var image = user[0].image;
