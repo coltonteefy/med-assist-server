@@ -84,7 +84,11 @@ exports.register = function (req, res) {
                     name: name,
                     permissions: permissions,
                     image: '',
-                    prescriptions: {}
+                    prescriptions: {
+                        drugName: '',
+                        numberRefills: '',
+                        expireDate: ''
+                    }
                 });
 
                 User.createUser(newUser, function (err, user) {
