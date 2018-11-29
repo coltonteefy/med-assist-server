@@ -85,7 +85,7 @@ exports.register = function (req, res) {
                     permissions: permissions,
                     image: '',
                     prescriptions: {
-                        drugName: '',
+                        drugName: 'ignore',
                         numberRefills: '',
                         expireDate: ''
                     }
