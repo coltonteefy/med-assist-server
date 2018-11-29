@@ -84,11 +84,7 @@ exports.register = function (req, res) {
                     name: name,
                     permissions: permissions,
                     image: '',
-                    prescriptions: {
-                        drugName: '',
-                        numberRefills: 0,
-                        expireDate: ''
-                    }
+                    prescriptions: {}
                 });
 
                 User.createUser(newUser, function (err, user) {
@@ -377,7 +373,7 @@ exports.updateBasicInfo = function (req, res) {
         maritalStatus: req.body.maritalStatus,
         language: req.body.language,
         race: req.body.race,
-        ethnicity: req.body.ethnicity,
+        ethnicity: req.body.ethnicity
     };
     User.updateOne({
         username: req.params.username
